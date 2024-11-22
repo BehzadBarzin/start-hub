@@ -5,4 +5,6 @@ import GitHub from "next-auth/providers/github";
 export const {
   handlers, // Auth routes (used in src/app/api/auth/[...nextauth]/route.ts)
   auth, // Auth middleware (not used)
+  signIn,
+  signOut,
 } = NextAuth({ providers: [GitHub] });
