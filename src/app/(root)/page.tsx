@@ -1,7 +1,27 @@
-export default function Home() {
+import SearchForm from "@/components/SearchForm";
+
+interface IProps {
+  searchParams: Promise<{ query?: string }>;
+}
+
+export default async function Home({ searchParams }: IProps) {
+  // Extract the query string from the search params
+  const query = (await searchParams).query;
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <h1 className="text-2xl sm:text-4xl font-bold">YC Directory</h1>
-    </div>
+    <>
+      {/* Heading------------------------------------------------------------------------------  */}
+      <section className="pink_container">
+        <h1 className="heading">
+          Pitch Your Startup, <br /> Connect With Entrepreneurs.
+        </h1>
+        <p className="sub-heading !max-w-3xl">
+          Submit Ideas, Vote on Pitches, and Get Noticed in Virtual
+          Competitions.
+        </p>
+        {/* Search Form */}
+        <SearchForm query={query} />
+      </section>
+    </>
   );
 }
