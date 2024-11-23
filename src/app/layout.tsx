@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import "easymde/dist/easymde.min.css"; // For Sanity Studio
 
 // -------------------------------------------------------------------------------------------------
 // Load Custom Font
