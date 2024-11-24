@@ -3,9 +3,9 @@ import { defineQuery } from "next-sanity";
 // -------------------------------------------------------------------------------------------------
 // Sanity Queries
 // -------------------------------------------------------------------------------------------------
-// Get all startups with author
+// Get all startups with author (accepts search param for filtering)
 export const STARTUPS_QUERY =
-  defineQuery(`*[_type == "startup" && defined(slug.current)] | order(_createdAt desc) {
+  defineQuery(`*[_type == "startup" && defined(slug.current) && !defined($search) || title match $search || category match $search || author->name match $search] | order(_createdAt desc) {
   _id, 
   title, 
   slug,
