@@ -1,5 +1,8 @@
 import SearchForm from "@/components/SearchForm";
-import StartupCard from "@/components/StartupCard";
+import StartupCard, { StartupCardType } from "@/components/StartupCard";
+import { STARTUPS_QUERY } from "@/lib/queries";
+import { client } from "@/sanity/lib/client";
+import { STARTUPS_QUERYResult } from "@/sanity/types";
 
 interface IProps {
   searchParams: Promise<{ query?: string }>;
@@ -9,19 +12,8 @@ export default async function Home({ searchParams }: IProps) {
   // Extract the query string from the search params
   const query = (await searchParams).query;
 
-  const posts = [
-    {
-      _id: 1,
-      _createdAt: new Date(),
-      views: 55,
-      author: { _id: 1, name: "John Doe" },
-      description: "this is a description.",
-      image:
-        "https://images.unsplash.com/photo-1721332153521-120cb0cd02d9?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      category: "Robots",
-      title: "We Robots",
-    },
-  ];
+  // Get the posts from Sanity
+  const posts = await client.fetch<STARTUPS_QUERYResult>(STARTUPS_QUERY);
 
   return (
     <>
@@ -48,7 +40,9 @@ export default async function Home({ searchParams }: IProps) {
           {/* Map over the posts */}
           {posts.length ? (
             // If posts exist, display them
-            posts.map((post) => <StartupCard key={post._id} post={post} />)
+            posts.map((post: StartupCardType) => (
+              <StartupCard key={post._id} post={post} />
+            ))
           ) : (
             // If no posts, display a message
             <p className="no-results">No Startups Found!</p>

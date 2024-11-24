@@ -4,6 +4,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { FC } from "react";
 import { Button } from "./ui/button";
+import { Author, Startup } from "@/sanity/types";
+
+export type StartupCardType = Omit<Startup, "author"> & {
+  author?: Author;
+};
 
 interface IProps {
   post: StartupCardType;
@@ -27,8 +32,8 @@ const StartupCard: FC<IProps> = ({ post }) => {
         {/* Row 2,Left: Author Name, Post Title */}
         <div className="flex-1">
           {/* Author Name (Link) */}
-          <Link href={`/user/${post.author._id}`}>
-            <p className="text-16-medium line-clamp-1">{post.author.name}</p>
+          <Link href={`/user/${post.author?._id}`}>
+            <p className="text-16-medium line-clamp-1">{post.author?.name}</p>
           </Link>
           {/* Post Title */}
           <Link href={`/startup/post/${post._id}`}>
@@ -37,7 +42,7 @@ const StartupCard: FC<IProps> = ({ post }) => {
         </div>
         {/* Row 2,Right: Author Avatar */}
         {/* Author Avatar Image */}
-        <Link href={`/user/${post.author._id}`}>
+        <Link href={`/user/${post.author?._id}`}>
           <Image
             src={"https://placehold.co/48x48"}
             alt="author"
@@ -57,7 +62,7 @@ const StartupCard: FC<IProps> = ({ post }) => {
       {/* Row 4: Footer */}
       <div className="flex-between gap-3 mt-5">
         {/* Category Link */}
-        <Link href={`/?query=${post.category.toLowerCase()}`}>
+        <Link href={`/?query=${post.category?.toLowerCase()}`}>
           <p className="text-16-medium">{post.category}</p>
         </Link>
         {/* Startup Link */}
