@@ -1,5 +1,5 @@
 import SearchForm from "@/components/SearchForm";
-import StartupCard, { StartupCardType } from "@/components/StartupCard";
+import StartupCard from "@/components/StartupCard";
 import { STARTUPS_QUERY } from "@/lib/queries";
 import { client } from "@/sanity/lib/client";
 import { STARTUPS_QUERYResult } from "@/sanity/types";
@@ -40,9 +40,7 @@ export default async function Home({ searchParams }: IProps) {
           {/* Map over the posts */}
           {posts.length ? (
             // If posts exist, display them
-            posts.map((post: StartupCardType) => (
-              <StartupCard key={post._id} post={post} />
-            ))
+            posts.map((post) => <StartupCard key={post._id} post={post} />)
           ) : (
             // If no posts, display a message
             <p className="no-results">No Startups Found!</p>

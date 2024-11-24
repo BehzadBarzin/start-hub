@@ -4,14 +4,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { FC } from "react";
 import { Button } from "./ui/button";
-import { Author, Startup } from "@/sanity/types";
-
-export type StartupCardType = Omit<Startup, "author"> & {
-  author?: Author;
-};
+import { STARTUPS_QUERYResult } from "@/sanity/types";
 
 interface IProps {
-  post: StartupCardType;
+  post: STARTUPS_QUERYResult[0]; // Type of a member of the STARTUPS_QUERYResult which itself is an array type
 }
 
 const StartupCard: FC<IProps> = ({ post }) => {
@@ -57,7 +53,9 @@ const StartupCard: FC<IProps> = ({ post }) => {
         {/* Description */}
         <p className="startup-card_desc">{post.description}</p>
         {/* Image */}
-        <img src={post.image} alt="startup" className="startup-card_img" />
+        {post.image && (
+          <img src={post.image} alt="startup" className="startup-card_img" />
+        )}
       </Link>
       {/* Row 4: Footer */}
       <div className="flex-between gap-3 mt-5">
