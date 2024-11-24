@@ -4,10 +4,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { FC } from "react";
 import { Button } from "./ui/button";
-import { STARTUPS_QUERYResult } from "@/sanity/types";
+import { Author, Startup } from "@/sanity/types";
+
+export type StartupTypeCard = Omit<Startup, "author"> & { author?: Author };
 
 interface IProps {
-  post: STARTUPS_QUERYResult[0]; // Type of a member of the STARTUPS_QUERYResult which itself is an array type
+  post: StartupTypeCard;
 }
 
 const StartupCard: FC<IProps> = ({ post }) => {

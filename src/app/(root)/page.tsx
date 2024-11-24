@@ -1,8 +1,7 @@
 import SearchForm from "@/components/SearchForm";
-import StartupCard from "@/components/StartupCard";
+import StartupCard, { StartupTypeCard } from "@/components/StartupCard";
 import { STARTUPS_QUERY } from "@/lib/queries";
-import { client } from "@/sanity/lib/client";
-import { STARTUPS_QUERYResult } from "@/sanity/types";
+import { sanityFetch, SanityLive } from "@/sanity/lib/live";
 
 interface IProps {
   searchParams: Promise<{ query?: string }>;
@@ -13,7 +12,9 @@ export default async function Home({ searchParams }: IProps) {
   const query = (await searchParams).query;
 
   // Get the posts from Sanity
-  const posts = await client.fetch<STARTUPS_QUERYResult>(STARTUPS_QUERY);
+  const { data: posts } = await sanityFetch({
+    query: STARTUPS_QUERY,
+  });
 
   return (
     <>
@@ -40,13 +41,18 @@ export default async function Home({ searchParams }: IProps) {
           {/* Map over the posts */}
           {posts.length ? (
             // If posts exist, display them
-            posts.map((post) => <StartupCard key={post._id} post={post} />)
+            posts.map((post: StartupTypeCard) => (
+              <StartupCard key={post._id} post={post} />
+            ))
           ) : (
             // If no posts, display a message
             <p className="no-results">No Startups Found!</p>
           )}
         </ul>
       </section>
+      {/* Sanity Live--------------------------------------------------------------------------- */}
+      {/* Enables content to be updated in real-time if the document is edited */}
+      <SanityLive />
       {/* -------------------------------------------------------------------------------------- */}
     </>
   );
