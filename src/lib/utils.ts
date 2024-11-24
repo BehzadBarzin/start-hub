@@ -14,3 +14,9 @@ export function formatDate(date: string): string {
     year: "numeric",
   });
 }
+
+// -------------------------------------------------------------------------------------------------
+// Todo
+export function parseServerActionResponse<T>(response: T) {
+  return JSON.parse(JSON.stringify(response));
+}

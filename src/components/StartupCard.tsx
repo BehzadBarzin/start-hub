@@ -42,7 +42,7 @@ const StartupCard: FC<IProps> = ({ startup }) => {
         {/* Author Avatar Image */}
         <Link href={`/user/${startup.author?._id}`}>
           <Image
-            src={"https://placehold.co/48x48"}
+            src={startup.author?.image || "https://placehold.co/48x48"}
             alt="author"
             width={48}
             height={48}
