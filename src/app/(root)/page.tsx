@@ -1,7 +1,8 @@
 import SearchForm from "@/components/SearchForm";
-import StartupCard, { StartupTypeCard } from "@/components/StartupCard";
+import StartupCard from "@/components/StartupCard";
 import { STARTUPS_QUERY } from "@/sanity/lib/queries";
 import { sanityFetch, SanityLive } from "@/sanity/lib/live";
+import { STARTUPS_QUERYResult } from "@/sanity/types";
 
 interface IProps {
   searchParams: Promise<{ query?: string }>;
@@ -14,10 +15,11 @@ export default async function Home({ searchParams }: IProps) {
   const sanityParams = { search: query || null };
 
   // Get the posts from Sanity
-  const { data: posts } = await sanityFetch({
+  const { data } = await sanityFetch({
     query: STARTUPS_QUERY,
     params: sanityParams,
   });
+  const posts = data as STARTUPS_QUERYResult;
 
   return (
     <>
@@ -44,9 +46,7 @@ export default async function Home({ searchParams }: IProps) {
           {/* Map over the posts */}
           {posts.length ? (
             // If posts exist, display them
-            posts.map((post: StartupTypeCard) => (
-              <StartupCard key={post._id} post={post} />
-            ))
+            posts.map((su) => <StartupCard key={su._id} startup={su} />)
           ) : (
             // If no posts, display a message
             <p className="no-results">No Startups Found!</p>
