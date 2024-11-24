@@ -3,6 +3,8 @@ import { STARTUP_VIEWS_QUERY } from "@/sanity/lib/queries";
 import { STARTUP_VIEWS_QUERYResult } from "@/sanity/types";
 import Ping from "./Ping";
 import { FC } from "react";
+import { writeClient } from "@/sanity/lib/write-client";
+import { unstable_after as after } from "next/server";
 
 interface IProps {
   id: string;
@@ -11,11 +13,19 @@ interface IProps {
 const View: FC<IProps> = async ({ id }) => {
   // Get total views per startup from Sanity
   const data: STARTUP_VIEWS_QUERYResult = await client
-    .withConfig({ useCdn: false }) // To always fetch the latest
+    .withConfig({ useCdn: false }) // To always fetch the latest (don't use cache)
     .fetch(STARTUP_VIEWS_QUERY, { id });
   const totalViews: number = data?.views || 0;
 
-  // Todo: Update views
+  // Update views
+  // Using `unstable_after` to schedule work to be done after the current request
+  after(
+    async () =>
+      await writeClient
+        .patch(id)
+        .set({ views: totalViews + 1 })
+        .commit()
+  );
 
   return (
     <div className="view-container">
