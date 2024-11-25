@@ -61,8 +61,8 @@ const workSans = localFont({
 // Metadata
 
 export const metadata: Metadata = {
-  title: "YC Directory",
-  description: "YC Directory website",
+  title: "StartHub",
+  description: "StartHub is a startup community platform.",
 };
 
 // -------------------------------------------------------------------------------------------------
